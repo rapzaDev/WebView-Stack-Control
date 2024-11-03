@@ -6,14 +6,13 @@ final keepAlive = InAppWebViewKeepAlive();
 class WebViewScreen extends StatefulWidget {
   final String url;
 
-  WebViewScreen({required this.url});
+  const WebViewScreen({super.key, required this.url});
 
   @override
-  _WebViewScreenState createState() => _WebViewScreenState();
+  WebViewScreenState createState() => WebViewScreenState();
 }
 
-class _WebViewScreenState extends State<WebViewScreen>
-    with AutomaticKeepAliveClientMixin {
+class WebViewScreenState extends State<WebViewScreen> {
   InAppWebViewController? webViewController;
   String? currentUrl;
 
@@ -21,6 +20,8 @@ class _WebViewScreenState extends State<WebViewScreen>
   void initState() {
     super.initState();
     currentUrl = widget.url;
+
+    debugPrint("currentUrl: $currentUrl");
   }
 
   @override
@@ -37,9 +38,6 @@ class _WebViewScreenState extends State<WebViewScreen>
 
   @override
   Widget build(BuildContext context) {
-    super.build(
-        context); // Chama super.build() para garantir o comportamento do KeepAlive
-
     return Scaffold(
       appBar: AppBar(
         title: Text('InAppWebView'),
@@ -51,7 +49,6 @@ class _WebViewScreenState extends State<WebViewScreen>
         ),
       ),
       body: InAppWebView(
-        keepAlive: keepAlive,
         initialUrlRequest: URLRequest(url: WebUri(currentUrl ?? widget.url)),
         onWebViewCreated: (controller) {
           webViewController = controller;
@@ -66,7 +63,4 @@ class _WebViewScreenState extends State<WebViewScreen>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true; // Ativa a preservação do estado com KeepAlive
 }
