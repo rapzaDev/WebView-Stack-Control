@@ -1,27 +1,51 @@
+import 'package:empilhamento/modules/core/presenters/store/core_store.dart';
+
 import 'package:empilhamento/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class HomeStore {
-  /// Vai salvar a ultima url acessada.
-  ValueNotifier<String> lastSelectedUrl = ValueNotifier<String>("");
+  final CoreStore coreStore;
 
-  void update(String url) {
-    lastSelectedUrl.value = url;
-  }
+  HomeStore({required this.coreStore});
+
+  // --------- GETTERS ---------
 
   int itemCount() {
-    return webviewURLs.values.length;
+    return WebviewURLs.values.length;
   }
 
   String optionImage(int index) {
-    return webviewURLs.values[index].img;
+    return WebviewURLs.values[index].img;
   }
 
   String optionName(int index) {
-    return webviewURLs.values[index].name;
+    return WebviewURLs.values[index].name;
   }
 
   String optionUrl(int index) {
-    return webviewURLs.values[index].url;
+    return WebviewURLs.values[index].url;
+  }
+
+  String getLastUrl() {
+    return coreStore.lastSelectedUrl.value;
+  }
+
+  // --------- NAVIGATION ---------
+
+  Future<void> goToWebView(BuildContext context, int index) async {
+    String newUrl = optionUrl(index);
+
+    coreStore.urlUpdate(newUrl);
+
+    coreStore.navigate();
+  }
+
+  bool goBackToWebViewVerification() {
+    return coreStore.lastSelectedUrl.value.isNotEmpty;
+  }
+
+  Future<void> goBackToWebView(BuildContext context) async {
+    coreStore.isLoadingChange();
+    coreStore.navigate();
   }
 }

@@ -1,4 +1,4 @@
-enum webviewURLs {
+enum WebviewURLs {
   cvcrm,
   google,
   youtube,
