@@ -33,21 +33,12 @@ class HomeScreenState extends State<HomeScreen> {
                     fit: BoxFit.contain,
                   ),
                   title: Text(store.optionName(index)),
-                  onTap: () => store.goToWebView(context, index),
+                  onTap: () => store.goToWebView(index),
                 ),
               );
             },
           ),
         ),
-        if (store.goBackToWebViewVerification())
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: ElevatedButton.icon(
-              onPressed: () => store.goBackToWebView(context),
-              icon: const Icon(Icons.web),
-              label: const Text('Return to WebView'),
-            ),
-          ),
       ],
     );
   }

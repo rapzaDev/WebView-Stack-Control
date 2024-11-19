@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:empilhamento/modules/webview/presenters/store/webview_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -49,7 +48,7 @@ class WebViewScreenState extends State<WebViewScreen> {
             listenable: store,
             builder: (context, child) {
               return InAppWebView(
-                initialSettings: InAppWebViewSettings(),
+                initialSettings: store.settings,
                 initialUrlRequest: URLRequest(url: WebUri(store.url())),
                 onWebViewCreated: store.onWebViewCreated,
                 onProgressChanged: store.onProgressChanged,
@@ -65,7 +64,7 @@ class WebViewScreenState extends State<WebViewScreen> {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: const Center(
-                child: CircularProgressIndicator(), // Indicador de loading
+                child: CircularProgressIndicator(),
               ),
             ),
         ],

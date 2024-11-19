@@ -1,7 +1,6 @@
 import 'package:empilhamento/modules/core/presenters/store/core_store.dart';
 
 import 'package:empilhamento/utils/utils.dart';
-import 'package:flutter/material.dart';
 
 class HomeStore {
   final CoreStore coreStore;
@@ -32,20 +31,11 @@ class HomeStore {
 
   // --------- NAVIGATION ---------
 
-  Future<void> goToWebView(BuildContext context, int index) async {
+  Future<void> goToWebView(int index) async {
     String newUrl = optionUrl(index);
 
     coreStore.urlUpdate(newUrl);
 
-    coreStore.navigate();
-  }
-
-  bool goBackToWebViewVerification() {
-    return coreStore.lastSelectedUrl.value.isNotEmpty;
-  }
-
-  Future<void> goBackToWebView(BuildContext context) async {
-    coreStore.isLoadingChange();
     coreStore.navigate();
   }
 }

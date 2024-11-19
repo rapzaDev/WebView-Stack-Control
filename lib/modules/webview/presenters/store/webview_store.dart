@@ -36,24 +36,12 @@ class WebviewStore extends ChangeNotifier {
     if (newUrl != currentUrl.value) {
       _updateUrl(newUrl);
 
-      // debugPrint("isLoading: ${core.isLoading.value}");
-
-      await controller.value
-          .loadUrl(
+      await controller.value.loadUrl(
         urlRequest: URLRequest(
           url: WebUri(
             currentUrl.value,
           ),
         ),
-      )
-          .then(
-        (_) async {
-          await Future.delayed(const Duration(seconds: 2), () {
-            core.isLoadingChange();
-          });
-
-          //  debugPrint("isLoading: ${core.isLoading.value}");
-        },
       );
     }
   }
@@ -71,6 +59,20 @@ class WebviewStore extends ChangeNotifier {
 
     _pullToRefreshControllerInit();
   }
+
+  void _initUrl() {
+    currentUrl.value = "init";
+
+    notifyListeners();
+  }
+
+  void _updateUrl(String value) {
+    currentUrl.value = value;
+
+    core.urlUpdate(value);
+  }
+
+  // INAPPWEBVEW FUNCTIONS
 
   void _pullToRefreshControllerInit() async {
     pullToRefreshController.value = (kIsWeb ||
@@ -93,8 +95,6 @@ class WebviewStore extends ChangeNotifier {
           ))!;
   }
 
-  //
-
   void onWebViewCreated(InAppWebViewController webViewController) {
     controller = ValueNotifier<InAppWebViewController>(webViewController);
   }
@@ -112,23 +112,9 @@ class WebviewStore extends ChangeNotifier {
       InAppWebViewController controller, WebUri? url, bool mounted) async {
     var newUrl = url != null ? url.path : '';
 
+    core.isLoadingChange();
+
     _updateUrl(newUrl);
-
-    notifyListeners();
-  }
-
-  //
-
-  void _initUrl() {
-    currentUrl.value = "init";
-
-    notifyListeners();
-  }
-
-  _updateUrl(String value) {
-    currentUrl.value = value;
-
-    core.urlUpdate(value);
   }
 
   void onPopInvokedWithResult(bool onPop, Object? _) async {

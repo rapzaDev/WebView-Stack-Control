@@ -20,17 +20,19 @@ class CoreStore extends ChangeNotifier {
   void navigate() {
     switch (screenIndex.value) {
       case 0:
-        screenIndex.value++;
+        ++screenIndex.value;
 
         break;
       case 1:
-        screenIndex.value--;
+        --screenIndex.value;
 
         isLoadingChange();
+
         break;
     }
 
     notifyListeners();
+
     return;
   }
 
