@@ -34,8 +34,10 @@ class HomeStore {
   Future<void> goToWebView(int index) async {
     String newUrl = optionUrl(index);
 
+    // Update the last selected url in home screen
     coreStore.urlUpdate(newUrl);
 
+    // Navigate to weview
     coreStore.navigate();
   }
 }

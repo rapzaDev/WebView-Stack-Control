@@ -58,15 +58,20 @@ class WebViewScreenState extends State<WebViewScreen> {
               );
             },
           ),
-          if (store.isLoading())
-            Container(
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+          ValueListenableBuilder<bool>(
+            valueListenable: store.isLoading,
+            builder: (context, isLoading, child) {
+              if (!isLoading) return const SizedBox.shrink();
+              return Container(
+                color: Colors.white,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

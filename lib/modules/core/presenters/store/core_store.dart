@@ -6,27 +6,14 @@ class CoreStore extends ChangeNotifier {
 
   ValueNotifier<String> lastSelectedUrl = ValueNotifier<String>("");
 
-  /// whenever the user chooses an option from the initial list
-  /// or go back to home screen,
-  /// this variable will be set.
-  ValueNotifier<bool> isLoading = ValueNotifier<bool>(true);
-
-  void isLoadingChange() {
-    isLoading.value = !isLoading.value;
-
-    notifyListeners();
-  }
-
   void navigate() {
     switch (screenIndex.value) {
       case 0:
-        ++screenIndex.value;
+        screenIndex.value++;
 
         break;
       case 1:
-        --screenIndex.value;
-
-        isLoadingChange();
+        screenIndex.value--;
 
         break;
     }
@@ -38,5 +25,7 @@ class CoreStore extends ChangeNotifier {
 
   void urlUpdate(String url) async {
     lastSelectedUrl.value = url;
+
+    notifyListeners();
   }
 }

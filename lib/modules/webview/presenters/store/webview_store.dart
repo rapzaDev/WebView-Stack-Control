@@ -14,6 +14,11 @@ class WebviewStore extends ChangeNotifier {
 
   ValueNotifier<double> progress = ValueNotifier<double>(0);
 
+  /// whenever the user chooses an option from the initial list
+  /// or go back to home screen,
+  /// this variable will be set.
+  ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
+
   late ValueNotifier<InAppWebViewController> controller;
 
   ValueNotifier<PullToRefreshController> pullToRefreshController =
@@ -30,19 +35,22 @@ class WebviewStore extends ChangeNotifier {
 
   // STORE FUNCTIONS
 
+  void activateLoading() {
+    isLoading.value = true;
+  }
+
+  void deactivateLoading() {
+    isLoading.value = false;
+  }
+
   void didUpdate() async {
-    String newUrl = core.lastSelectedUrl.value;
+    if (currentUrl.value != core.lastSelectedUrl.value) {
+      activateLoading();
 
-    if (newUrl != currentUrl.value) {
-      _updateUrl(newUrl);
+      _updateUrl(core.lastSelectedUrl.value);
 
-      await controller.value.loadUrl(
-        urlRequest: URLRequest(
-          url: WebUri(
-            currentUrl.value,
-          ),
-        ),
-      );
+      await controller.value
+          .loadUrl(urlRequest: URLRequest(url: WebUri(currentUrl.value)));
     }
   }
 
@@ -69,7 +77,7 @@ class WebviewStore extends ChangeNotifier {
   void _updateUrl(String value) {
     currentUrl.value = value;
 
-    core.urlUpdate(value);
+    notifyListeners();
   }
 
   // INAPPWEBVEW FUNCTIONS
@@ -110,11 +118,7 @@ class WebviewStore extends ChangeNotifier {
 
   void onLoadStop(
       InAppWebViewController controller, WebUri? url, bool mounted) async {
-    var newUrl = url != null ? url.path : '';
-
-    core.isLoadingChange();
-
-    _updateUrl(newUrl);
+    deactivateLoading();
   }
 
   void onPopInvokedWithResult(bool onPop, Object? _) async {
@@ -132,11 +136,7 @@ class WebviewStore extends ChangeNotifier {
 
   // GETTERS
 
-  String url() {
-    return currentUrl.value;
-  }
+  String url() => currentUrl.value;
 
-  bool isLoading() {
-    return core.isLoading.value;
-  }
+  bool isLoadingVerify() => isLoading.value;
 }
