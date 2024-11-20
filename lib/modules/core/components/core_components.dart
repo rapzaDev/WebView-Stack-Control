@@ -22,7 +22,7 @@ enum AppBarOption {
   ) =>
       switch (this) {
         home => AppBar(
-            title: const Text('Lista de Sites'),
+            title: const Text('List of Sites'),
           ),
         webview => AppBar(
             title: const Text('InAppWebView'),
